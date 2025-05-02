@@ -1,0 +1,12 @@
+
+
+
+arduino platform.txt:
+---------------------
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.extra_flags} 
+compiler.path={tools.{build.tarch}-esp-elf-gcc.path}/bin/
+tools.xtensa-esp-elf-gcc.path={runtime.tools.esp-x32.path}
+
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" 
+compiler.path={tools.{build.tarch}-esp-elf-gcc.path}/bin/
+tools.xtensa-esp-elf-gcc.path={runtime.platform.path}/tools/xtensa-esp-elf

@@ -1,7 +1,7 @@
 #include "jimlib.h"
 #include "serialLog.h"
 #ifndef CSIM
-#include "rom/uart.h"
+#include "mySD.h"
 #endif
 
 JStuff j;
@@ -9,6 +9,9 @@ CLI_VARIABLE_FLOAT(x, 1);
 
 void setup() {
     j.begin();
+    OUT("calling SD.begin()");
+    int r = SD.begin(4,2,1,3);
+    OUT("SD begin() returned %d", r);
     j.cli.on("RESET", [](){ ESP.restart(); });
 }
 
