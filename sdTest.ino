@@ -15,9 +15,27 @@ void setup() {
     j.cli.on("RESET", [](){ ESP.restart(); });
 }
 
+int writeS(ext::File f, string s) { return f.write(s.c_str()); }
+
+int loopCount = 0;
 void loop() {
     j.run();
-    OUT("loop %f", (float)x);
+    loopCount++;
+    string fn = sfmt("/TEST%04d.TXT", loopCount % 10);
+    ext::File f = SD.open(fn.c_str(), F_WRONLY | F_CREAT | F_TRUNC);
+    int wres = writeS(f, sfmt("%08d", loopCount));
+    f.close();
+
+    f = SD.open(fn.c_str(), FILE_READ);
+    uint8_t buf[64];
+    int n = f.read(buf, sizeof(buf));
+    f.close();
+    if (n >= 0) {
+        buf[n] = 0;
+        OUT("write of '%s' returned %d, read returned '%s'", fn.c_str(), wres, buf);
+    } else { 
+        OUT("write of '%s' returned %d, read error %d", fn.c_str(), wres, n);
+    }
     delay(1000);
 }
 
